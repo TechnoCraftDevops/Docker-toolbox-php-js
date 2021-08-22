@@ -26,7 +26,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin -
 RUN composer global require marcocesarato/php-conventional-changelog
 
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it
-RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog" >> ./release-it
+RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
 RUN chmod +x release-it
 RUN cp ./release-it /usr/local/bin/
 RUN rm ./release-it
