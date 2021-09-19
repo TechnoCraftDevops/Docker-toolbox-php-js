@@ -1,11 +1,14 @@
 
-FROM alpine:edge
+FROM alpine:3.14
 
 # update alpine
 RUN apk update && apk upgrade
 
 # install tools
 RUN apk add openssh-client wget curl git make bash
+
+# Copy the docker client from local docker image
+COPY --from=docker /usr/local/bin/docker /usr/bin/docker
 
 # install php
 RUN apk add --no-cache  --repository http://dl-cdn.alpinelinux.org/alpine/edge/community php
