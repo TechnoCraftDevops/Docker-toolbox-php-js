@@ -4,7 +4,7 @@ FROM jakzal/phpqa:php7.4-alpine
 # update alpine
 RUN apk update && apk upgrade
 
-# install tools
+# install linux tools
 RUN apk add openssh-client wget curl git make bash libzip-dev zip
 
 # Copy the docker client from local docker image
@@ -43,5 +43,8 @@ RUN cp ./release-it-first /usr/local/bin/
 RUN cp ./release-it /usr/local/bin/
 RUN rm ./release-it-first
 RUN rm ./release-it
+
+#install unsed tools
+composer global require icanhazstring/composer-unused
 
 CMD [ "bash" ]
