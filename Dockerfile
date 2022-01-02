@@ -16,6 +16,8 @@ RUN composer -V
 
 # install symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash
+RUN export PATH="$HOME/.symfony/bin:$PATH"
+RUN symfony
 
 # install php dependency
 RUN apk add php7-curl \
