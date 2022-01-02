@@ -45,6 +45,6 @@ RUN rm ./release-it-first
 RUN rm ./release-it
 
 #install unsed tools
-composer global require icanhazstring/composer-unused
+RUN composer global require icanhazstring/composer-unused
 
 CMD [ "bash" ]
