@@ -1,18 +1,21 @@
 
-FROM alpine:3.14
+FROM jakzal/phpqa:php7.4-alpine
 
 # update alpine
 RUN apk update && apk upgrade
 
 # install tools
-RUN apk add openssh-client wget curl git make bash
+RUN apk add openssh-client wget curl git make bash libzip-dev zip
 
 # Copy the docker client from local docker image
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
 
-# install php
-RUN apk add --no-cache  --repository http://dl-cdn.alpinelinux.org/alpine/edge/community php
+# install php & composer
 RUN php -v
+RUN composer -V
+
+# install symfony CLI
+RUN wget https://get.symfony.com/cli/installer -O - | bash
 
 # install php dependency
 RUN apk add php7-curl \
@@ -21,13 +24,14 @@ RUN apk add php7-curl \
             php7-json \
             php7-mbstring \
             php7-phar \
+            php7-mysqli \
+            php7-pdo \
+            php7-pdo_mysql \
+            php7-xdebug \
             php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
 
-# install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer  
 # install release tool
 RUN composer global require marcocesarato/php-conventional-changelog
-
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it-first
 RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --first-release" >> ./release-it-first
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it
