@@ -27,9 +27,11 @@ RUN apk add php7-curl \
             php7-phar \
             php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
 RUN docker-php-ext-install mysqli pdo pdo_mysql
-RUN apk add --no-cache $PHPIZE_DEPS \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug
+
+RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} autoconf \ 
+  && pecl install xdebug \
+  && docker-php-ext-enable xdebug \
+  && apk del pcre-dev ${PHPIZE_DEPS}
 
 # install release tool
 RUN composer global require marcocesarato/php-conventional-changelog
@@ -46,5 +48,5 @@ RUN rm ./release-it
 
 #install unsed tools
 RUN composer global require icanhazstring/composer-unused
-
+RUN php --ini
 CMD [ "bash" ]
