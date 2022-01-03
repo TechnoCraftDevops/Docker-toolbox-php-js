@@ -32,7 +32,7 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} autoconf \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug \
   && apk del pcre-dev ${PHPIZE_DEPS}
-
+RUN echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini
 # install release tool
 RUN composer global require marcocesarato/php-conventional-changelog
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it-first
@@ -49,4 +49,5 @@ RUN rm ./release-it
 #install unsed tools
 RUN composer global require icanhazstring/composer-unused
 RUN php --ini
+RUN php --ri xdebug |grep coverage
 CMD [ "bash" ]
