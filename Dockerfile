@@ -25,9 +25,11 @@ RUN apk add php7-curl \
             php7-json \
             php7-mbstring \
             php7-phar \
-            php7-xdebug \
             php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
 RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
 # install release tool
 RUN composer global require marcocesarato/php-conventional-changelog
