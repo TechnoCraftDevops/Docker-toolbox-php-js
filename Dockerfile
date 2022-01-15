@@ -47,6 +47,7 @@ RUN rm ./release-it-first
 RUN rm ./release-it
 
 # install commit linter
+RUN echo 'rebuild'
 RUN git clone https://github.com/TechnoCraftDevops/ci-conventionnal-commit-linter.git
 RUN cp ./ci-conventionnal-commit-linter/ci-commit-linter /usr/local/bin/
 
