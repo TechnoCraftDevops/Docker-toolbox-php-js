@@ -5,7 +5,7 @@ FROM jakzal/phpqa:php7.4-alpine
 RUN apk update && apk upgrade
 
 # install linux tools
-RUN apk add openssh-client wget curl git make bash libzip-dev zip
+RUN apk add openssh-client wget curl git make bash libzip-dev zip ncurses
 
 # Copy the docker client from local docker image
 COPY --from=docker /usr/local/bin/docker /usr/bin/docker
@@ -46,8 +46,12 @@ RUN cp ./release-it /usr/local/bin/
 RUN rm ./release-it-first
 RUN rm ./release-it
 
+# install commit linter
+RUN git clone https://github.com/TechnoCraftDevops/ci-conventionnal-commit-linter.git
+RUN cp ./ci-conventionnal-commit-linter/ci-commit-linter /usr/local/bin/
+
 #install unsed tools
 RUN composer global require icanhazstring/composer-unused
 RUN php --ini
-RUN php --ri xdebug |grep coverage
+RUN php --ri xdebug | grep coverage
 CMD [ "bash" ]
