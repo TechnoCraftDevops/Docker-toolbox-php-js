@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 # Data commits
-CONVCOMMIT_LIST=$(git log -s --format=%s master..$1  | grep --color=never -E '^(build|ci|feat|fix|refactor|style|docs|test)?\([a-z]*\): (.{1,50}$)');
+CONVCOMMIT_LIST=$(git log -s --format=%s master..$1  | grep --color=never -E '^(build|ci|chore|feat|fix|refactor|style|docs|test)?\([a-z]*\): (.{1,50}$)');
 ALLCOMMIT_LIST=$(git log -s --format=%s master..$1 );
 
-CONVCOMMIT_COUNT=$(git log -s --format=%s master..$1  | grep --color=never -E '^(build|ci|feat|fix|refactor|style|docs|test)?\([a-z]*\): (.{1,50}$)' | wc -l);
+CONVCOMMIT_COUNT=$(git log -s --format=%s master..$1  | grep --color=never -E '^(build|ci|chore|feat|fix|refactor|style|docs|test)?\([a-z]*\): (.{1,50}$)' | wc -l);
 ALLCOMMIT_COUNT=$(git log -s --format=%s master..$1  | wc -l);
 
 
 DIFF=$(diff  <(echo -e "$ALLCOMMIT_LIST"\n) <(echo -e "$CONVCOMMIT_LIST"\n));
-DIFF_COUNT=$(($ALLCOMMIT_COUNT - $CONVCOMMIT_COUNT))
+DIFF_COUNT=$(($ALLCOMMIT_COUNT - $CONVCOMMIT_COUNT));
 # Styles
 red=`tput setaf 1`;
 green=`tput setaf 2`;
@@ -22,7 +22,7 @@ bold=$(tput bold);
 underline=`(tput sgr 0 1)`;
 
 reset=`tput sgr0`;
-echo ${DIFF_COUNT}
+echo ${DIFF_COUNT};
 if [ ${DIFF_COUNT} -ge 1 ];then
   echo ${underline}${red}  "${bold} ${DIFF_COUNT} no-conventionnal commit found" ${reset};
   echo ${yellow} "-------------" ${reset};
@@ -41,6 +41,6 @@ else
   echo ${blue} "-------------" ${reset};
   echo ${green} "$CONVCOMMIT_LIST" ${reset};
   echo ${blue} "-------------" ${reset};
-  echo ${bold} ${blue} "good job !" ${reset}
+  echo ${bold} ${blue} "good job !" ${reset};
   exit 0;
 fi
