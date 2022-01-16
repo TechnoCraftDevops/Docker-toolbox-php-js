@@ -11,17 +11,19 @@ ALLCOMMIT_COUNT=$(git log -s --format=%s master..$1  | wc -l);
 DIFF=$(diff  <(echo -e "$ALLCOMMIT_LIST"\n) <(echo -e "$CONVCOMMIT_LIST"\n));
 DIFF_COUNT=$(($ALLCOMMIT_COUNT - $CONVCOMMIT_COUNT));
 # Styles
-red=`tput setaf 1`;
-green=`tput setaf 2`;
-blue=`tput setaf 4`;
-yellow=`tput setaf 3`;
+#https://stackoverflow.com/questions/48536791/error-tput-no-value-for-term-and-no-t-specified
+[[ ${TERM}=="" ]] && TPUTTERM='-T xterm-256color' TPUTTERM=''
+declare -r red=`tput${TPUTTERM} setaf 1`;
+declare -r declare -r green=`tput${TPUTTERM} setaf 2`;
+declare -r blue=`tput${TPUTTERM} setaf 4`;
+declare -r yellow=`tput${TPUTTERM} setaf 3`;
 
-# whiteBg=`tput setab 8`
+# whiteBg=`tput${TPUTTERM} setab 8`
 
-bold=$(tput bold);
-underline=`(tput sgr 0 1)`;
+declare -r bold=$(tput${TPUTTERM} bold);
+declare -r underline=`(tput${TPUTTERM} sgr 0 1)`;
 
-reset=`tput sgr0`;
+declare -r reset=`tput${TPUTTERM} sgr0`;
 echo ${DIFF_COUNT};
 if [ ${DIFF_COUNT} -ge 1 ];then
   echo ${underline}${red}  "${bold} ${DIFF_COUNT} no-conventionnal commit found" ${reset};
