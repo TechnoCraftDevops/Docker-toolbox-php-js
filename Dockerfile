@@ -48,8 +48,7 @@ RUN rm ./release-it
 
 # install commit linter
 RUN echo 'build'
-RUN git clone https://github.com/TechnoCraftDevops/ci-conventionnal-commit-linter.git
-RUN cp ./ci-conventionnal-commit-linter/ci-commit-linter /usr/local/bin/
+COPY ./ci-commit-linter /usr/local/bin/ci-commit-linter
 
 #install unsed tools
 RUN composer global require icanhazstring/composer-unused
