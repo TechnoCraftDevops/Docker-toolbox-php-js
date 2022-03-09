@@ -36,9 +36,9 @@ RUN echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini
 # install release tool
 RUN composer global require marcocesarato/php-conventional-changelog
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it-first
-RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --first-release" >> ./release-it-first
+RUN echo "php /tools/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --first-release" >> ./release-it-first
 RUN echo -e '#!/usr/bin/env bash' >> ./release-it
-RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
+RUN echo "php /tools/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
 RUN chmod +x release-it-first
 RUN chmod +x release-it
 # RUN cp ./release-it-first /usr/local/bin/
