@@ -41,10 +41,10 @@ RUN echo -e '#!/usr/bin/env bash' >> ./release-it
 RUN echo "php ~/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
 RUN chmod +x release-it-first
 RUN chmod +x release-it
-RUN cp ./release-it-first /usr/local/bin/
-RUN cp ./release-it /usr/local/bin/
-RUN rm ./release-it-first
-RUN rm ./release-it
+# RUN cp ./release-it-first /usr/local/bin/
+# RUN cp ./release-it /usr/local/bin/
+# RUN rm ./release-it-first
+# RUN rm ./release-it
 
 # install commit linter
 RUN echo 'build'
