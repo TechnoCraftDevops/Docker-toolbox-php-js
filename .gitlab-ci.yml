@@ -1,21 +1,34 @@
 variables:
-    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_GITLAB: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    IMAGE_TAG_DOCKER_HUB: index.docker.io/technocraftdevops/PhpToolBox
   
 stages:
-    - build
+    - build-for-GitLab
+    - build-for-DockerHub
 
 .docker:
     image: docker
     before_script:
       - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
   
-build docker image:
-    stage: build
+build docker for GitLab:
+    stage: build-for-GitLab
     extends: .docker
     script:
-      - docker build -t $IMAGE_TAG .
-      - docker push $IMAGE_TAG
+      - docker build -t $IMAGE_TAG_GITLAB .
+      - docker push $IMAGE_TAG_GITLAB
       - echo "done !"
     only:
       - master
   
+build docker for DockerHub:
+    stage: build-for-DockerHub
+    extends: .docker
+    before_script:
+    - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_REGISTRY" $DOCKER_HUB_REGISTRY
+    script:
+      - docker build --pull -t "$IMAGE_TAG_DOCKER_HUB" .
+      - docker push "$IMAGE_TAG_DOCKER_HUB"
+      - echo "in docker hub !"
+    only:
+      - master
