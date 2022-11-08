@@ -26,8 +26,8 @@ RUN apk add php7-curl \
             php7-iconv \
             php7-json \
             php7-mbstring \
-            php7-phar \
-            php7-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/*
+            php7-phar \ 
+              && rm /var/cache/apk/*
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} autoconf \ 
