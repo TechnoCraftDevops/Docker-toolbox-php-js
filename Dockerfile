@@ -20,7 +20,6 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' 
 RUN apk add symfony-cli
 RUN symfony
 
-
 # install php dependency PHP
 RUN apk add php7-curl \
             php7-openssl \
@@ -45,7 +44,6 @@ RUN echo -e '#!/usr/bin/env bash' >> ./release-it
 RUN echo "php /tools/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
 RUN chmod +x release-it-first
 RUN chmod +x release-it
-
 
 # install commit linter NODE
 RUN npm install --g @commitlint/prompt-cli @commitlint/cli @commitlint/config-conventional conventional-changelog-angular
