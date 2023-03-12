@@ -1,7 +1,8 @@
 variables:
     IMAGE_TAG_GITLAB: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_DOCKER_HUB: index.docker.io/technocraftdevops/phptoolbox:7.4
-  
+    IMAGE_TAG_DOCKER_HUB: index.docker.io/technocraftdevops/phptoolbox:8.1
+    CURRENT_DOCKER_FILE : Dockerfile-php8.1
+
 stages:
     - build-for-GitLab
     - build-for-DockerHub
@@ -27,7 +28,7 @@ build docker for DockerHub:
     before_script:
     - docker login -u "$DOCKER_HUB_USER" -p "$DOCKER_HUB_TOKEN" $DOCKER_HUB_REGISTRY
     script:
-      - docker build -t "$IMAGE_TAG_DOCKER_HUB" .
+      - docker build -t $IMAGE_TAG_DOCKER_HUB -f $CURRENT_DOCKER_FILE .
       - docker push "$IMAGE_TAG_DOCKER_HUB"
       - echo "in docker hub !"
     only:
