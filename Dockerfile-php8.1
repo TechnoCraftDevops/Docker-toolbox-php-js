@@ -18,7 +18,7 @@ RUN apk add php8-curl \
             php8-pdo_mysql \
             php8-xdebug \
             php8-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/* 
-
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 RUN echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini
 
 # install release tool
