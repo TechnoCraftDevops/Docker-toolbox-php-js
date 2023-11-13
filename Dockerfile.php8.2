@@ -1,0 +1,59 @@
+FROM jakzal/phpqa:php8.2-alpine
+
+# update alpine
+RUN apk update && apk upgrade
+
+# install linux package
+RUN apk add openssh-client wget curl git make bash libzip-dev zip ncurses nodejs npm
+
+# # install php dependency
+RUN apk add php82-curl \
+            php82-openssl \
+            php82-iconv \
+            php82-json \
+            php82-mbstring \
+            php82-phar \
+            php82-mysqli \
+            php82-pdo \
+            php82-pdo_mysql \
+            php82-xdebug \
+            php82-dom --repository http://nl.alpinelinux.org/alpine/edge/testing/ && rm /var/cache/apk/* 
+
+RUN apk update && apk upgrade && apk add --update linux-headers
+
+RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} autoconf 
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+RUN apk del pcre-dev ${PHPIZE_DEPS}
+RUN echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini
+
+# install release tool
+RUN composer global require marcocesarato/php-conventional-changelog
+RUN echo -e '#!/usr/bin/env bash' >> ./release-it-first
+RUN echo "php /tools/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --first-release" >> ./release-it-first
+RUN echo -e '#!/usr/bin/env bash' >> ./release-it
+RUN echo "php /tools/.composer/vendor/marcocesarato/php-conventional-changelog/conventional-changelog --commit" >> ./release-it
+RUN chmod +x release-it-first
+RUN chmod +x release-it
+
+# install commit linter node
+RUN npm install --g @commitlint/prompt-cli @commitlint/cli @commitlint/config-conventional conventional-changelog-angular
+
+# install php-compatibility
+RUN composer global require --dev --prefer-stable phpcompatibility/php-compatibility:*
+RUN phpcs --config-set installed_paths /tools/.composer/vendor/phpcompatibility/php-compatibility,../../pheromone/phpcs-security-audit
+
+#install unsed tools
+RUN composer global require icanhazstring/composer-unused
+RUN echo -e '#!/usr/bin/env bash' >> ./composer-check-unused
+RUN echo "php /tools/.composer/vendor/icanhazstring/composer-unused/composer-unused.php" >> ./composer-check-unused
+RUN chmod +x composer-check-unused
+
+# install symfony CLI
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | sh
+RUN apk add symfony-cli
+RUN symfony
+
+RUN php --ini
+
+CMD [ "bash" ]

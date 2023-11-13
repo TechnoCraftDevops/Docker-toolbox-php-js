@@ -1,7 +1,7 @@
 variables:
     IMAGE_TAG_GITLAB: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_TAG_DOCKER_HUB: index.docker.io/technocraftdevops/phptoolbox:8.1
-    CURRENT_DOCKER_FILE : Dockerfile-php8.1
+    IMAGE_TAG_DOCKER_HUB: index.docker.io/technocraftdevops/phptoolbox:8.2
+    CURRENT_DOCKER_FILE : Dockerfile.php8.2
 
 stages:
     - build-for-GitLab
